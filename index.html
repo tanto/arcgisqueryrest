@@ -12,32 +12,29 @@
   <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.4/esri-leaflet.js"></script>
 
   <style>
-    body {margin:0;padding:0;}
-    #map {position: absolute;top:0;bottom:0;right:0;left:0;}
+  body {margin:0;padding:0;}
+  #map {position: absolute;top:0;bottom:0;right:0;left:0;}
   </style>
 </head>
 <body>
 
-<div id="map"></div>
+  <div id="map"></div>
 
-<script>
+  <script>
   var map = L.map('map').setView([43.575209590000043, 12.191401164000069], 9);
 
   L.esri.basemapLayer('Streets').addTo(map);
-  //L.esri.featureLayer('http://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/Heritage_Trees_Portland/FeatureServer/0').addTo(map);
-  //L.esri.featureLayer('http://geo.umbriaterritorio.it/ArcGIS/rest/services/Public/ECOGRAFICO_CATASTALE1_WGS84/MapServer/0',{useCors:false}).addTo(map);
-
   
   var query = L.esri.Tasks.query('http://geo.umbriaterritorio.it/ArcGIS/rest/services/Public/ECOGRAFICO_CATASTALE1_WGS84/MapServer/0',{useCors:false});
 
-query.where("DESCR_S49 LIKE '%CORPOSANO%'").run(function(error, results){
+  query.where("DESCR_S49 LIKE '%CORPOSANO%'").run(function(error, results){
     var group = new L.featureGroup;
-	var punti = L.geoJson(results);
-	group.addLayer(punti);
-	map.fitBounds(group.getBounds());
-	punti.addTo(map);
-});
-</script>
+    var punti = L.geoJson(results);
+    group.addLayer(punti);
+    map.fitBounds(group.getBounds());
+    punti.addTo(map);
+  });
+  </script>
 
 
 
