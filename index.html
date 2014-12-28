@@ -1,8 +1,12 @@
 <html>
 <head>
   <meta charset=utf-8 />
-  <title>Visualizzare una Query REST fatta su ArcGIS Server</title>
+  <title>TANTO - Visualizzare una Query REST fatta su ArcGIS Server</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <meta property="og:image" content="http://tanto.github.io/arcgisqueryrest/imgs/share.jpg" />
+  <meta property="og:title" content="TANTO - Sfruttare le query REST per accedere a dati grezzi su ArcGIS Server" />
+  <meta property="og:url" content="http://blog.spaziogis.it/2014/12/28/take-the-best-use-the-rest/" />
 
   <!-- Load Leaflet from CDN-->
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -29,10 +33,21 @@
 
   query.where("DESCR_S49 LIKE '%CORPOSANO%'").run(function(error, results){
     var group = new L.featureGroup;
-    var punti = L.geoJson(results);
+    
+    function onEachFeature(feature, layer) {
+
+      if (feature.properties && feature.properties.DESCR_S49) {
+        layer.bindPopup('<strong>DESCR_S49</strong>: ' + feature.properties.DESCR_S49 + '<br>' + '<strong>NUMERO</strong>: ' + feature.properties.NUMERO);
+      }
+    }
+
+    var punti = L.geoJson(results, {
+      onEachFeature: onEachFeature
+    }).addTo(map);
     group.addLayer(punti);
     map.fitBounds(group.getBounds());
-    punti.addTo(map);
+
+
   });
   </script>
 
